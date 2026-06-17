@@ -1,0 +1,133 @@
+/** @type {import('tailwindcss').Config} */
+
+export default {
+  darkMode: "class",
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+    },
+    extend: {
+      colors: {
+        warm: {
+          50: "#FFF9F0",
+          100: "#FFEFD9",
+          200: "#FFD9B3",
+          300: "#FFBE80",
+          400: "#FFA659",
+          500: "#FF8C42",
+          600: "#E67029",
+          700: "#B3561E",
+          800: "#803E16",
+          900: "#4D260D",
+        },
+        field: {
+          50: "#F0F7EC",
+          100: "#DBEBD1",
+          200: "#B7D7A3",
+          300: "#8FC070",
+          400: "#6B9E5C",
+          500: "#558048",
+          600: "#426538",
+          700: "#324C2A",
+          800: "#21331C",
+          900: "#101A0E",
+        },
+        sky: {
+          50: "#F0F8FF",
+          100: "#D6EDFF",
+          200: "#B0DBFF",
+          300: "#87CEEB",
+          400: "#5DB8DE",
+          500: "#39A0CF",
+          600: "#2A80A6",
+          700: "#1E607D",
+          800: "#134055",
+          900: "#0A202B",
+        },
+        wheat: {
+          50: "#FFFBEB",
+          100: "#FFF4C9",
+          200: "#FFE894",
+          300: "#FFDB5C",
+          400: "#F4D03F",
+          500: "#D4B030",
+          600: "#A88820",
+          700: "#7C6418",
+          800: "#504210",
+          900: "#282108",
+        },
+        earth: {
+          50: "#F5F0E6",
+          100: "#E6D9C2",
+          200: "#CCB585",
+          300: "#B39149",
+          400: "#9C7A2F",
+          500: "#8B6914",
+          600: "#6E520F",
+          700: "#523D0B",
+          800: "#372908",
+          900: "#1B1404",
+        },
+      },
+      fontFamily: {
+        display: ['"ZCOOL KuaiLe"', '"Noto Sans SC"', "sans-serif"],
+        body: ['"Noto Sans SC"', "system-ui", "sans-serif"],
+      },
+      animation: {
+        "float": "float 3s ease-in-out infinite",
+        "float-slow": "float 6s ease-in-out infinite",
+        "bounce-gentle": "bounceGentle 2s ease-in-out infinite",
+        "wiggle": "wiggle 1s ease-in-out infinite",
+        "fly": "fly 4s ease-in-out infinite",
+        "grow": "grow 2s ease-out forwards",
+        "shimmer": "shimmer 2s linear infinite",
+        "fade-in-up": "fadeInUp 0.6s ease-out forwards",
+      },
+      keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        bounceGentle: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(-3deg)" },
+          "50%": { transform: "rotate(3deg)" },
+        },
+        fly: {
+          "0%": { transform: "translateX(-20px) translateY(0) rotate(0deg)" },
+          "25%": { transform: "translateX(0) translateY(-15px) rotate(5deg)" },
+          "50%": { transform: "translateX(20px) translateY(0) rotate(0deg)" },
+          "75%": { transform: "translateX(0) translateY(15px) rotate(-5deg)" },
+          "100%": { transform: "translateX(-20px) translateY(0) rotate(0deg)" },
+        },
+        grow: {
+          "0%": { transform: "scale(0.8)", opacity: "0" },
+          "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        fadeInUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      boxShadow: {
+        "soft": "0 4px 20px rgba(0, 0, 0, 0.08)",
+        "card": "0 8px 30px rgba(0, 0, 0, 0.12)",
+        "warm": "0 4px 20px rgba(255, 140, 66, 0.3)",
+        "field": "0 4px 20px rgba(107, 158, 92, 0.3)",
+      },
+      borderRadius: {
+        "4xl": "2rem",
+      },
+    },
+  },
+  plugins: [],
+};
