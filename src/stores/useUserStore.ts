@@ -8,6 +8,8 @@ interface UserState {
   mood: string | null;
   streakDays: number;
   lastSignDate: string | null;
+  checkInDates: string[];
+  longestStreak: number;
   safetyBadges: string[];
   setNickname: (name: string) => void;
   setMood: (mood: string) => void;
@@ -16,6 +18,7 @@ interface UserState {
   checkIn: () => boolean;
   addSafetyBadge: (badge: string) => void;
   hasBadge: (badge: string) => boolean;
+  getValidCheckInDates: () => string[];
 }
 
 const initialState = {
@@ -25,6 +28,8 @@ const initialState = {
   mood: null,
   streakDays: 3,
   lastSignDate: null,
+  checkInDates: [] as string[],
+  longestStreak: 0,
   safetyBadges: [] as string[],
 };
 
@@ -40,6 +45,13 @@ function saveToStorage(state: Partial<UserState>) {
 export const useUserStore = create<UserState>((set, get) => {
   const saved = loadFromStorage();
   const state = { ...initialState, ...saved };
+
+  if (state.checkInDates.length === 0 && state.lastSignDate) {
+    state.checkInDates = [state.lastSignDate];
+  }
+  if (state.longestStreak < state.streakDays) {
+    state.longestStreak = state.streakDays;
+  }
 
   return {
     ...state,
@@ -90,12 +102,16 @@ export const useUserStore = create<UserState>((set, get) => {
         newStreak = 1;
       }
 
+      const newLongestStreak = Math.max(get().longestStreak, newStreak);
+      const newCheckInDates = [...get().checkInDates, today];
       const bonusCoins = 10 + (newStreak - 1) * 2;
       const newCoins = get().coins + bonusCoins;
 
       set({
         lastSignDate: today,
         streakDays: newStreak,
+        longestStreak: newLongestStreak,
+        checkInDates: newCheckInDates,
         coins: newCoins,
       });
 
@@ -103,6 +119,8 @@ export const useUserStore = create<UserState>((set, get) => {
         ...get(),
         lastSignDate: today,
         streakDays: newStreak,
+        longestStreak: newLongestStreak,
+        checkInDates: newCheckInDates,
         coins: newCoins,
       });
 
@@ -118,6 +136,11 @@ export const useUserStore = create<UserState>((set, get) => {
 
     hasBadge: (badge) => {
       return get().safetyBadges.includes(badge);
+    },
+
+    getValidCheckInDates: () => {
+      const today = getTodayString();
+      return get().checkInDates.filter((d) => d <= today);
     },
   };
 });

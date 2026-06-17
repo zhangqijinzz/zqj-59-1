@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Bird, Sprout, Shield, Compass, Sparkles, Flame, Gift } from "lucide-react";
+import { Bird, Sprout, Shield, Compass, Sparkles, Flame, Gift, CalendarDays } from "lucide-react";
 import GooseMascot from "@/components/common/GooseMascot";
 import MoodPicker from "@/components/common/MoodPicker";
 import FeatureCard from "@/components/common/FeatureCard";
+import CheckInCalendar from "@/components/common/CheckInCalendar";
 import { useUserStore } from "@/stores/useUserStore";
 
 const GREETINGS = [
@@ -20,6 +21,7 @@ export default function Home() {
   );
   const [showCheckInSuccess, setShowCheckInSuccess] = useState(false);
   const [todayChecked, setTodayChecked] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -107,12 +109,16 @@ export default function Home() {
 
         {/* 签到和连续天数 */}
         <div className="flex flex-wrap justify-center gap-3 mb-6">
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-soft">
+          <button
+            onClick={() => setShowCalendar(true)}
+            className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-soft hover:bg-warm-50 transition-colors cursor-pointer"
+          >
             <Flame size={18} className="text-warm-500" />
             <span className="text-sm text-gray-600">
               已连续签到 <span className="font-bold text-warm-600">{streakDays}</span> 天
             </span>
-          </div>
+            <CalendarDays size={16} className="text-warm-400" />
+          </button>
           <button
             onClick={handleCheckIn}
             disabled={todayChecked}
@@ -156,6 +162,8 @@ export default function Home() {
       <div className="mt-12 text-center text-sm text-gray-400">
         <p>🌾 愿每一颗星星都照亮你回家的路 🌾</p>
       </div>
+
+      <CheckInCalendar open={showCalendar} onClose={() => setShowCalendar(false)} />
     </div>
   );
 }
