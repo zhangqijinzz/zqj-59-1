@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight, Flame, Calendar, Trophy } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 
@@ -40,6 +40,29 @@ const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 
 export default function CheckInCalendar({ open, onClose }: CheckInCalendarProps) {
   const { streakDays, longestStreak, getValidCheckInDates } = useUserStore();
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+    };
+  }, [open, onClose]);
 
   const todayStr = useMemo(() => {
     const d = new Date();
@@ -112,11 +135,20 @@ export default function CheckInCalendar({ open, onClose }: CheckInCalendarProps)
     return days;
   }, [viewYear, viewMonth, daysInMonth, firstDay]);
 
+  const handleOverlayTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm touch-none"
+        onClick={onClose}
+        onTouchMove={handleOverlayTouchMove}
+      />
       <div className="relative bg-white rounded-3xl shadow-card max-w-md w-full max-h-[90vh] overflow-y-auto animate-fade-in-up">
         <div className="sticky top-0 bg-white rounded-t-3xl z-10">
           <div className="flex items-center justify-between px-6 pt-5 pb-3">
